@@ -1,17 +1,15 @@
 repositories {
     mavenLocal()
-    jcenter()
     mavenCentral()
-    maven { url 'https://dl.bintray.com/kotlin/exposed' }
-    maven { url 'http://central.maven.org/maven2/io/bluebank/braid/braid-corda/master/braid-corda-master.jar'}
+    maven { url 'https://software.r3.com/artifactory/corda' }
     maven { url 'https://jitpack.io' }
-    maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases' }
+    // needed for gradle-tooling-api dependency in node-driver-api
+    maven { url 'https://repo.gradle.org/gradle/libs-releases-local/' }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'net.corda.plugins.cordapp'
-apply plugin: 'net.corda.plugins.publish-utils'
 apply plugin: 'net.corda.plugins.cordformation'
 apply plugin: 'net.corda.plugins.quasar-utils'
 apply plugin: 'maven-publish'
@@ -32,26 +30,25 @@ sourceSets {
 dependencies {
     testCompile "junit:junit:$junit_version"
 
-    // Corda integration dependencies
-    cordaCompile "$corda_release_distribution:corda-core:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-finance-contracts:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-finance-workflows:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-jackson:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-rpc:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-node-api:$corda_release_version"
-    cordaCompile "$corda_release_distribution:corda-webserver-impl:$corda_release_version"
-    cordaRuntime "$corda_release_distribution:corda:$corda_release_version"
-    cordaRuntime "$corda_release_distribution:corda-webserver:$corda_release_version"
+    // Corda dependencies.
+    cordaCompile "$corda_core_release_group:corda-core:$corda_core_release_version"
+    cordaCompile "$corda_core_release_group:corda-jackson:$corda_release_version"
+    cordaRuntime "$corda_release_group:corda:$corda_release_version"
+    cordaRuntime "$corda_release_group:corda-node-api:$corda_release_version"
+    testCompile "$corda_release_group:corda-node-driver:$corda_release_version"
 
-    testCompile "$corda_release_distribution:corda-test-utils:$corda_release_version"
-    testCompile "$corda_release_distribution:corda-node-driver:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-finance-contracts:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-finance-workflows:$corda_release_version"
 
-    compile "io.bluebank.braid:braid-corda:$braid_version"
+    compile "io.cordite.braid:braid-corda:$braid_version"
+    compile "commons-io:commons-io:$commons_io_version"
+    compile "javax.json:javax.json-api:$json_api_version"
+
 
     // CorDapp dependencies
     // Specify your cordapp's dependencies below, including dependent CorDapps
-    cordapp "$corda_release_distribution:corda-finance-contracts:$corda_release_version"
-    cordapp "$corda_release_distribution:corda-finance-workflows:$corda_release_version"
+    cordapp "$corda_release_group:corda-finance-contracts:$corda_release_version"
+    cordapp "$corda_release_group:corda-finance-workflows:$corda_release_version"
 }
 
 tasks.withType(JavaCompile) {
@@ -73,8 +70,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     }
 
     nodeDefaults {
-        cordapp("$corda_release_distribution:corda-finance-contracts:$corda_release_version")
-        cordapp("$corda_release_distribution:corda-finance-workflows:$corda_release_version")
+        cordapp("$corda_release_group:corda-finance-contracts:$corda_release_version")
+        cordapp("$corda_release_group:corda-finance-workflows:$corda_release_version")
     }
 
     node {

@@ -22,7 +22,7 @@ public class BraidService {
     public String getIssuedPromissoryNotes() {
         JsonArrayBuilder allStatesJSONArrayBuilder = Json.createArrayBuilder();
 
-        serviceHub.getVaultService().queryBy(PromissoryNoteState.class).getStates().stream().forEach(stateAndRef -> {
+        serviceHub.getVaultService().queryBy(PromissoryNoteState.class).getStates().forEach(stateAndRef -> {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             objectBuilder.add("ContractText", stateAndRef.getState().getData().getApContractText());
             objectBuilder.add("MakerCordaParty", stateAndRef.getState().getData().getMakerCordaParty().getName().toString());

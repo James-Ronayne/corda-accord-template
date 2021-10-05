@@ -1,9 +1,9 @@
 package net.corda.accord
 
-import io.bluebank.braid.corda.BraidConfig
-import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
-import io.vertx.core.http.HttpServerOptions
+import io.cordite.braid.corda.BraidConfig
+import io.cordite.braid.libs.io.vertx.core.AsyncResult
+import io.cordite.braid.libs.io.vertx.core.Handler
+import io.cordite.braid.libs.io.vertx.core.http.HttpServerOptions
 import net.corda.accord.flow.PromissoryNoteIssueFlow
 import net.corda.accord.flow.PromissoryNoteIssueJSONFlow
 import net.corda.core.node.AppServiceHub

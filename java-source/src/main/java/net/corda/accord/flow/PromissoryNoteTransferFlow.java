@@ -18,7 +18,6 @@ import net.corda.core.node.services.vault.QueryCriteria;
 import net.corda.core.transactions.SignedTransaction;
 import net.corda.core.transactions.TransactionBuilder;
 
-import javax.validation.constraints.NotNull;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +124,6 @@ public class PromissoryNoteTransferFlow {
                 }
 
                 @Override
-                @NotNull
                 protected void checkTransaction(SignedTransaction stx) {
                     requireThat(require -> {
                         ContractState output = stx.getTx().getOutputs().get(0).getData();

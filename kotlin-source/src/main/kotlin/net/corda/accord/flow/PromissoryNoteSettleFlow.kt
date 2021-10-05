@@ -67,7 +67,7 @@ class PromissoryNoteSettleFlow(val linearId: UniqueIdentifier, val amount: Amoun
         val listOfFlows = (stateAndRefToSettle.state.data.participants - ourIdentity).map{ it -> initiateFlow(it as Party) }
         val stx = subFlow(CollectSignaturesFlow(ptx, listOfFlows))
 
-        return subFlow(FinalityFlow(stx))
+        return subFlow(FinalityFlow(stx, listOfFlows))
     }
 }
 
